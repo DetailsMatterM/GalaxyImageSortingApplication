@@ -3,31 +3,66 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <tchar.h>
 #include <Windows.h>
+#include <strsafe.h>
+#include <string>
+#include "atlstr.h"
 
 #define MAX 60
 
 using namespace std;
 
+TCHAR* convertToTCHAR(char* cha)
+{
+    int aa = strlen(cha);
+    TCHAR* tmp = new TCHAR[aa + 1];
+    for (int i = 0; i < aa + 1; i++)
+    {
+        tmp[i] = cha[i];
+    }
+    return tmp;
+}
 
-int main()
+int main(int argc, char* argv[])
 {
     WIN32_FIND_DATA FoundFileData;
-    char path[MAX];
-    cout << "Hello! Please specify the path of the directory you are working in: \n";
-    fgets(path, MAX, stdin);
-    cout << path << endl;
+    TCHAR szDir[MAX_PATH];
+    size_t length_of_arg;
+    
+    TCHAR* inputPath = convertToTCHAR(argv[1]);
+
+    if (argc != 2)
+    {
+        _tprintf(TEXT("\nUsage: %s <directory name>\n"), inputPath);
+        return (-1);
+    }
+    
+    StringCchLength(inputPath, MAX_PATH, &length_of_arg);
+
+    if (length_of_arg > (MAX_PATH - 3))
+    {
+        _tprintf(TEXT("\nDirectory path is too long.\n"));
+        return (-1);
+    }
+
+    _tprintf(TEXT("\nTarget directory is %s\n\n"), inputPath);
+
+    StringCchCopy(szDir, MAX_PATH, inputPath);
+    StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
+    HANDLE hFind = FindFirstFile(szDir, &FoundFileData);
+    
+    if (hFind == INVALID_HANDLE_VALUE) {
+        printf("FindFirstFile failed (%d)\n", GetLastError());
+        return (-1);
+    }
+
+    do {
+        if (FoundFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            _tprintf(TEXT("  %s   <DIR>\n"), FoundFileData.cFileName);
+        else
+            _tprintf(TEXT("  %s \n"), FoundFileData.cFileName);
+    } while (FindNextFile(hFind, &FoundFileData) != 0);
 
 
 }
-
-// Programm ausführen: STRG+F5 oder Menüeintrag "Debuggen" > "Starten ohne Debuggen starten"
-// Programm debuggen: F5 oder "Debuggen" > Menü "Debuggen starten"
-
-// Tipps für den Einstieg: 
-//   1. Verwenden Sie das Projektmappen-Explorer-Fenster zum Hinzufügen/Verwalten von Dateien.
-//   2. Verwenden Sie das Team Explorer-Fenster zum Herstellen einer Verbindung mit der Quellcodeverwaltung.
-//   3. Verwenden Sie das Ausgabefenster, um die Buildausgabe und andere Nachrichten anzuzeigen.
-//   4. Verwenden Sie das Fenster "Fehlerliste", um Fehler anzuzeigen.
-//   5. Wechseln Sie zu "Projekt" > "Neues Element hinzufügen", um neue Codedateien zu erstellen, bzw. zu "Projekt" > "Vorhandenes Element hinzufügen", um dem Projekt vorhandene Codedateien hinzuzufügen.
-//   6. Um dieses Projekt später erneut zu öffnen, wechseln Sie zu "Datei" > "Öffnen" > "Projekt", und wählen Sie die SLN-Datei aus.
