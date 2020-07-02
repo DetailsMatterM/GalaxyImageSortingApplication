@@ -90,19 +90,9 @@ int main(int argc, char* argv[])
     cout << newPath << endl;
     newPath = stringAdjust(newPath);
 
-    //newPath = newPath.replace(newPath.begin(), newPath.end(), '\\', '\\\\');
-    /*for (int i = 0; i < newPath.length(); i++) {
-        if (newPath[i] == '\\') {
-            newPath.insert(i - 1, 1, '\\');
-        }
-    }
-    */
     cout << newPath << endl;
 
-    newPath.append("\\Oktober");
-    wstring stemp = s2ws(newPath);
-    LPCWSTR pathToUse = stemp.c_str();
-    CreateDirectory(pathToUse, NULL);
+    
 
     do {
         PTSTR filename = FoundFileData.cFileName;
@@ -111,10 +101,8 @@ int main(int argc, char* argv[])
         wcstombs(CharStr, filename, size + 1); //Access to filename works for example like CharStr[15]
         if (filename[4] == '1') {
             switch (filename[5]) {
-            case 0:
-                
-                string newPath = argv[1];
-                newPath.append("Oktober");
+            case 0:   
+                newPath.append("\\Oktober");
                 wstring stemp = s2ws(newPath);
                 LPCWSTR pathToUse = stemp.c_str();
                 CreateDirectory(pathToUse, NULL);
