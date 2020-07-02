@@ -54,6 +54,13 @@ string stringAdjust(string input) {
     return output;
 }
 
+void makeDir(string path, string name) {
+    path.append(name);
+    wstring stemp = s2ws(path);
+    LPCWSTR pathToUse = stemp.c_str();
+    CreateDirectory(pathToUse, NULL);
+}
+
 int main(int argc, char* argv[])
 {
     WIN32_FIND_DATA FoundFileData;
@@ -101,11 +108,9 @@ int main(int argc, char* argv[])
         wcstombs(CharStr, filename, size + 1); //Access to filename works for example like CharStr[15]
         if (filename[4] == '1') {
             switch (filename[5]) {
-            case 0:   
-                newPath.append("\\Oktober");
-                wstring stemp = s2ws(newPath);
-                LPCWSTR pathToUse = stemp.c_str();
-                CreateDirectory(pathToUse, NULL);
+            case 0: 
+                makeDir(newPath, "\\Oktober");
+                
                 
 
             }
