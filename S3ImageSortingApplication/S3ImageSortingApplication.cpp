@@ -11,10 +11,12 @@
 #include <io.h>
 #include <direct.h>
 #include <sstream>
+#include <boost/filesystem.hpp>
 
 #define MAX 60
 
 using namespace std;
+using namespace boost;
 
 TCHAR* convertToTCHAR(char* cha)
 {
@@ -103,13 +105,13 @@ int main(int argc, char* argv[])
         printf("FindFirstFile failed (%d)\n", GetLastError());
         return (-1);
     }
-    string newPath = argv[1];
-    cout << newPath << endl;
-    newPath = stringAdjust(newPath);
-    newPath = newPath.append("\\\\Oktober");
+    string path = argv[1];
+    cout << path << endl;
+    path = stringAdjust(path);
+    /*string newPath = newPath.append("\\\\Oktober");
     makeDir(newPath);
     bool checker = dirExists(newPath);
-    cout << newPath << endl;
+    cout << newPath << endl;*/
 
     
 
@@ -121,15 +123,27 @@ int main(int argc, char* argv[])
         if (filename[4] == '1') {
             switch (filename[5]) {
             case 0: 
-                newPath = newPath.append("\\\\Oktober");
+                string newPath = newPath.append("\\\\Oktober");
                 bool checker = dirExists(newPath);
-                if (checker == false) {
+                if (checker == false) {      
                     makeDir(newPath);
                 }
+                else {
+                    //get filepath and then copy the file to the new location
+                    //string filePath = newPath.append(filename); //does not work
+                    //filesystem::copy_file(FoundFileData.cFileName,) //need better path to file
+                }
+
                
 
                 
                 
+
+            }
+        }
+        else {
+            switch (filename[5]) {
+            case 1:
 
             }
         }
