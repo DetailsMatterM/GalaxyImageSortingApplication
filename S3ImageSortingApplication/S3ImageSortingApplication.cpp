@@ -54,11 +54,21 @@ string stringAdjust(string input) {
     return output;
 }
 
-void makeDir(string path, string name) {
-    path.append(name);
+void makeDir(string path) {  
     wstring stemp = s2ws(path);
     LPCWSTR pathToUse = stemp.c_str();
     CreateDirectory(pathToUse, NULL);
+}
+
+bool dirExists(const string& dirName_in)
+{
+    DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
+         
+    if (ftyp & FILE_ATTRIBUTE_DIRECTORY) {
+        return true;
+    }
+
+    return false; 
 }
 
 int main(int argc, char* argv[])
@@ -96,7 +106,9 @@ int main(int argc, char* argv[])
     string newPath = argv[1];
     cout << newPath << endl;
     newPath = stringAdjust(newPath);
-
+    newPath = newPath.append("\\\\Oktober");
+    makeDir(newPath);
+    bool checker = dirExists(newPath);
     cout << newPath << endl;
 
     
@@ -109,7 +121,13 @@ int main(int argc, char* argv[])
         if (filename[4] == '1') {
             switch (filename[5]) {
             case 0: 
-                makeDir(newPath, "\\Oktober");
+                newPath = newPath.append("\\\\Oktober");
+                bool checker = dirExists(newPath);
+                if (checker == false) {
+                    makeDir(newPath);
+                }
+               
+
                 
                 
 
