@@ -58,10 +58,11 @@ int main(int argc, char* argv[])
     }
 
     do {
-        if (FoundFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-            _tprintf(TEXT("  %s   <DIR>\n"), FoundFileData.cFileName);
-        else
-            _tprintf(TEXT("  %s \n"), FoundFileData.cFileName);
+        PTSTR filename = FoundFileData.cFileName;
+        size_t size = wcstombs(NULL, filename, 0);
+        char* CharStr = new char[size + 1];
+        wcstombs(CharStr, filename, size + 1); //Access to filename works for example like CharStr[15]
+        _tprintf(TEXT("  %s \n"), FoundFileData.cFileName);
     } while (FindNextFile(hFind, &FoundFileData) != 0);
 
 
