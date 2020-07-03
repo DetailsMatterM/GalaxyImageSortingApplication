@@ -12,6 +12,8 @@
 #include <direct.h>
 #include <sstream>
 #include <boost/filesystem.hpp>
+#include <stdlib.h>
+#include <filesystem>
 
 #define MAX 60
 
@@ -73,6 +75,15 @@ bool dirExists(const string& dirName_in)
     return false; 
 }
 
+bool exists(string p)
+{
+    std::cout << p;
+    if (filesystem::exists(p))
+        return true;
+    else
+        return false;
+}
+
 int main(int argc, char* argv[])
 {
     WIN32_FIND_DATA FoundFileData;
@@ -105,9 +116,9 @@ int main(int argc, char* argv[])
         printf("FindFirstFile failed (%d)\n", GetLastError());
         return (-1);
     }
-    string path = argv[1];
+    /*string path = argv[1];
     cout << path << endl;
-    path = stringAdjust(path);
+    path = stringAdjust(path);*/
     /*string newPath = newPath.append("\\\\Oktober");
     makeDir(newPath);
     bool checker = dirExists(newPath);
@@ -118,20 +129,27 @@ int main(int argc, char* argv[])
     do {
         PTSTR filename = FoundFileData.cFileName;
         size_t size = wcstombs(NULL, filename, 0);
-        char* CharStr = new char[size + 1];
-        wcstombs(CharStr, filename, size + 1); //Access to filename works for example like CharStr[15]
+        char* charStr = new char[size + 1];
+        wcstombs(charStr, filename, size + 1); //Access to filename works for example like CharStr[15]
         if (filename[4] == '1') {
+            string path = argv[1];
+            cout << path << endl;
+            path = stringAdjust(path);
             switch (filename[5]) {
-            case 0: 
-                string newPath = newPath.append("\\\\Oktober");
-                bool checker = dirExists(newPath);
+            case '0':         
+                string newPath = path.append("\\\\Oktober");
+                bool checker = exists(newPath);
+                
                 if (checker == false) {      
                     makeDir(newPath);
                 }
                 else {
                     //get filepath and then copy the file to the new location
-                    //string filePath = newPath.append(filename); //does not work
-                    //filesystem::copy_file(FoundFileData.cFileName,) //need better path to file
+                    string filePathOld = path.append(charStr);
+                    cout << filePathOld << endl;
+                    //string filePathNew = newPath.append
+
+                    //filesystem::copy_file(charStr, ) //need better path to file
                 }
 
                
@@ -141,12 +159,12 @@ int main(int argc, char* argv[])
 
             }
         }
-        else {
+        /*else {
             switch (filename[5]) {
             case 1:
 
             }
-        }
+        }*/
         _tprintf(TEXT("  %s \n"), FoundFileData.cFileName);
     } while (FindNextFile(hFind, &FoundFileData) != 0);
 
