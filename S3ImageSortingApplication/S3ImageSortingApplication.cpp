@@ -1,6 +1,3 @@
-// S3ImageSortingApplication.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
-//
-
 #include <iostream>
 #include <stdio.h>
 #include <tchar.h>
@@ -13,7 +10,8 @@
 #include <sstream>
 #include <boost/filesystem.hpp>
 #include <stdlib.h>
-
+#include <direct.h>
+#define GetCurrentDir _getcwd
 
 #define MAX 60
 
@@ -85,9 +83,7 @@ bool exists(string p)
 
 void copyFile(string path, string newPath, char* charStr) {
     string filePathOld = path + "\\\\" + charStr;
-    //cout << filePathOld << endl;
     string filePathNew = newPath + "\\\\" + charStr;
-    //cout << filePathNew << endl;
     try {
         filesystem::copy_file(filePathOld, filePathNew);
     }
@@ -110,20 +106,25 @@ void copy(string path, char* charStr, string month) {
     }
 }
 
+string getCurrentDir() {
+    char buff[FILENAME_MAX]; //create string buffer to hold path
+    GetCurrentDir(buff, FILENAME_MAX);
+    string current_working_dir(buff);
+    return current_working_dir;
+}
+
 int main(int argc, char* argv[])
 {
     WIN32_FIND_DATA FoundFileData;
     TCHAR szDir[MAX_PATH];
     size_t length_of_arg;
     
-    TCHAR* inputPath = convertToTCHAR(argv[1]);
+    string location = getCurrentDir();
+    char* cstr = new char[location.length() + 1];
+    strcpy(cstr, location.c_str());
 
-    if (argc != 2)
-    {
-        _tprintf(TEXT("\nUsage: %s <directory name>\n"), inputPath);
-        return (-1);
-    }
-    
+    TCHAR* inputPath = convertToTCHAR(cstr);
+
     StringCchLength(inputPath, MAX_PATH, &length_of_arg);
 
     if (length_of_arg > (MAX_PATH - 3))
@@ -131,8 +132,6 @@ int main(int argc, char* argv[])
         _tprintf(TEXT("\nDirectory path is too long.\n"));
         return (-1);
     }
-
-    _tprintf(TEXT("\nTarget directory is %s\n\n"), inputPath);
 
     StringCchCopy(szDir, MAX_PATH, inputPath);
     StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
@@ -149,7 +148,7 @@ int main(int argc, char* argv[])
         char* charStr = new char[size + 1];
         wcstombs(charStr, filename, size + 1); //Access to filename works for example like CharStr[15]
         if (filename[4] == '1') {
-            string path = argv[1];
+            string path = location;
             path = stringAdjust(path);
             switch (filename[5]) {
                 case '0': 
@@ -162,10 +161,9 @@ int main(int argc, char* argv[])
                     copy(path, charStr, "Dezember");
                     break;
             }
-
         }
         else {
-            string path = argv[1];
+            string path = location;
             path = stringAdjust(path);
             switch (filename[5]) {
             case '1':
@@ -198,6 +196,4 @@ int main(int argc, char* argv[])
             }
         }
     } while (FindNextFile(hFind, &FoundFileData) != 0);
-
-
 }
