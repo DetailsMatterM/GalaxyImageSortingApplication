@@ -32,10 +32,10 @@ TCHAR* convertToTCHAR(char* cha)
 wstring s2ws(const std::string& s)
 {
     int len;
-    int slength = (int)s.length() + 1;
-    len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+    int sLength = (int)s.length() + 1;
+    len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), sLength, 0, 0);
     wchar_t* buf = new wchar_t[len];
-    MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+    MultiByteToWideChar(CP_ACP, 0, s.c_str(), sLength, buf, len);
     std::wstring r(buf);
     delete[] buf;
     return r;
@@ -43,7 +43,6 @@ wstring s2ws(const std::string& s)
 
 string stringAdjust(string input) {
     stringstream stream;
-
     for (int i = 0; i < input.length(); ++i) {
         if (input[i] == '\\') {
             stream << "\\\\";
@@ -60,17 +59,6 @@ void makeDir(string path) {
     wstring stemp = s2ws(path);
     LPCWSTR pathToUse = stemp.c_str();
     CreateDirectory(pathToUse, NULL);
-}
-
-bool dirExists(const string& dirName_in)
-{
-    DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
-         
-    if (ftyp & FILE_ATTRIBUTE_DIRECTORY) {
-        return true;
-    }
-
-    return false; 
 }
 
 bool exists(string p)
@@ -109,8 +97,8 @@ void copy(string path, char* charStr, string month) {
 string getCurrentDir() {
     char buff[FILENAME_MAX]; //create string buffer to hold path
     GetCurrentDir(buff, FILENAME_MAX);
-    string current_working_dir(buff);
-    return current_working_dir;
+    string currentWorkingDir(buff);
+    return currentWorkingDir;
 }
 
 int main(int argc, char* argv[])
