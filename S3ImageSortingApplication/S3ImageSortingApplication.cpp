@@ -88,7 +88,26 @@ void copyFile(string path, string newPath, char* charStr) {
     //cout << filePathOld << endl;
     string filePathNew = newPath + "\\\\" + charStr;
     //cout << filePathNew << endl;
-    filesystem::copy_file(filePathOld, filePathNew);
+    try {
+        filesystem::copy_file(filePathOld, filePathNew);
+    }
+    catch (boost::filesystem::filesystem_error e) {
+        cout << "File already copied" << endl;
+    }
+    
+}
+
+void copy(string path, char* charStr, string month) {
+    path = stringAdjust(path);
+    string newPath = path + "\\\\" + month;
+    bool checker = exists(newPath);
+    if (checker == false) {
+        makeDir(newPath);
+        copyFile(path, newPath, charStr);
+    }
+    else {
+        copyFile(path, newPath, charStr);
+    }
 }
 
 int main(int argc, char* argv[])
@@ -122,16 +141,7 @@ int main(int argc, char* argv[])
     if (hFind == INVALID_HANDLE_VALUE) {
         printf("FindFirstFile failed (%d)\n", GetLastError());
         return (-1);
-    }
-    /*string path = argv[1];
-    cout << path << endl;
-    path = stringAdjust(path);*/
-    /*string newPath = newPath.append("\\\\Oktober");
-    makeDir(newPath);
-    bool checker = dirExists(newPath);
-    cout << newPath << endl;*/
-
-    
+    }  
 
     do {
         PTSTR filename = FoundFileData.cFileName;
@@ -143,25 +153,50 @@ int main(int argc, char* argv[])
             cout << path << endl;
             path = stringAdjust(path);
             switch (filename[5]) {
-            case '0':         
-                string newPath = path + "\\\\Oktober";
-                bool checker = exists(newPath);
-                
-                if (checker == false) {      
+                case '0': 
+                    copy(path, charStr, "Oktober");
+                    break;
+                case '1':
+                    copy(path, charStr, "November");
+                    break;
+                case '2':
+                    copy(path, charStr, "Dezember");
+                    break;
+            }
+
+        }
+        else {
+            string path = argv[1];
+            cout << path << endl;
+            path = stringAdjust(path);
+            string newPath;
+            bool checker;
+            switch (filename[5]) {
+            case '1':
+                newPath = path + "\\\\Januar";
+                checker = exists(newPath);
+                if (checker == false) {
                     makeDir(newPath);
                     copyFile(path, newPath, charStr);
                 }
                 else {
-                    copyFile(path, newPath, charStr); 
+                    copyFile(path, newPath, charStr);
                 }
-            }
-        }
-        /*else {
-            switch (filename[5]) {
-            case 1:
+                break;
+            case '2':
+                newPath = path + "\\\\Februar";
+                checker = exists(newPath);
+                if (checker == false) {
+                    makeDir(newPath);
+                    copyFile(path, newPath, charStr);
+                }
+                else {
+                    copyFile(path, newPath, charStr);
+                }
+                break;
 
             }
-        }*/
+        }
         _tprintf(TEXT("  %s \n"), FoundFileData.cFileName);
     } while (FindNextFile(hFind, &FoundFileData) != 0);
 
