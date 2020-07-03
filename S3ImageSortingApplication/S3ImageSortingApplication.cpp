@@ -13,7 +13,7 @@
 #include <sstream>
 #include <boost/filesystem.hpp>
 #include <stdlib.h>
-#include <filesystem>
+
 
 #define MAX 60
 
@@ -77,7 +77,6 @@ bool dirExists(const string& dirName_in)
 
 bool exists(string p)
 {
-    std::cout << p;
     if (filesystem::exists(p))
         return true;
     else
@@ -137,7 +136,7 @@ int main(int argc, char* argv[])
             path = stringAdjust(path);
             switch (filename[5]) {
             case '0':         
-                string newPath = path.append("\\\\Oktober");
+                string newPath = path + "\\\\Oktober";
                 bool checker = exists(newPath);
                 
                 if (checker == false) {      
@@ -145,18 +144,12 @@ int main(int argc, char* argv[])
                 }
                 else {
                     //get filepath and then copy the file to the new location
-                    string filePathOld = path.append(charStr);
+                    string filePathOld = path + "\\\\" + charStr;
                     cout << filePathOld << endl;
-                    //string filePathNew = newPath.append
-
-                    //filesystem::copy_file(charStr, ) //need better path to file
+                    string filePathNew = newPath + "\\\\" + charStr;
+                    cout << filePathNew << endl;
+                    filesystem::copy_file(filePathOld, filePathNew); //need better path to file
                 }
-
-               
-
-                
-                
-
             }
         }
         /*else {
