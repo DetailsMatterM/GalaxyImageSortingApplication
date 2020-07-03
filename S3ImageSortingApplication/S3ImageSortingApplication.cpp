@@ -83,6 +83,14 @@ bool exists(string p)
         return false;
 }
 
+void copyFile(string path, string newPath, char* charStr) {
+    string filePathOld = path + "\\\\" + charStr;
+    //cout << filePathOld << endl;
+    string filePathNew = newPath + "\\\\" + charStr;
+    //cout << filePathNew << endl;
+    filesystem::copy_file(filePathOld, filePathNew);
+}
+
 int main(int argc, char* argv[])
 {
     WIN32_FIND_DATA FoundFileData;
@@ -141,14 +149,10 @@ int main(int argc, char* argv[])
                 
                 if (checker == false) {      
                     makeDir(newPath);
+                    copyFile(path, newPath, charStr);
                 }
                 else {
-                    //get filepath and then copy the file to the new location
-                    string filePathOld = path + "\\\\" + charStr;
-                    cout << filePathOld << endl;
-                    string filePathNew = newPath + "\\\\" + charStr;
-                    cout << filePathNew << endl;
-                    filesystem::copy_file(filePathOld, filePathNew); //need better path to file
+                    copyFile(path, newPath, charStr); 
                 }
             }
         }
