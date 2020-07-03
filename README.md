@@ -1,1 +1,1 @@
-# S3ImageSortingApplication
+# GalaxyImageSortingApplication
