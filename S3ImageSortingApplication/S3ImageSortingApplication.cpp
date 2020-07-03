@@ -150,7 +150,6 @@ int main(int argc, char* argv[])
         wcstombs(charStr, filename, size + 1); //Access to filename works for example like CharStr[15]
         if (filename[4] == '1') {
             string path = argv[1];
-            cout << path << endl;
             path = stringAdjust(path);
             switch (filename[5]) {
                 case '0': 
@@ -167,37 +166,37 @@ int main(int argc, char* argv[])
         }
         else {
             string path = argv[1];
-            cout << path << endl;
             path = stringAdjust(path);
-            string newPath;
-            bool checker;
             switch (filename[5]) {
             case '1':
-                newPath = path + "\\\\Januar";
-                checker = exists(newPath);
-                if (checker == false) {
-                    makeDir(newPath);
-                    copyFile(path, newPath, charStr);
-                }
-                else {
-                    copyFile(path, newPath, charStr);
-                }
+                copy(path, charStr, "Januar");
                 break;
             case '2':
-                newPath = path + "\\\\Februar";
-                checker = exists(newPath);
-                if (checker == false) {
-                    makeDir(newPath);
-                    copyFile(path, newPath, charStr);
-                }
-                else {
-                    copyFile(path, newPath, charStr);
-                }
+                copy(path, charStr, "Februar");
                 break;
-
+            case '3':
+                copy(path, charStr, "März");
+                break;
+            case '4':
+                copy(path, charStr, "April");
+                break;
+            case '5':
+                copy(path, charStr, "Mai");
+                break;
+            case '6':
+                copy(path, charStr, "Juni");
+                break;
+            case '7':
+                copy(path, charStr, "Juli");
+                break;
+            case '8':
+                copy(path, charStr, "August");
+                break;
+            case '9':
+                copy(path, charStr, "September");
+                break;
             }
         }
-        _tprintf(TEXT("  %s \n"), FoundFileData.cFileName);
     } while (FindNextFile(hFind, &FoundFileData) != 0);
 
 
