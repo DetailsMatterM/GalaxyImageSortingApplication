@@ -92,13 +92,13 @@ void copy(string path, char* charStr, string month) {
 }
 
 string getCurrentDir() {
-    char buff[FILENAME_MAX]; //create string buffer to hold path
+    char buff[FILENAME_MAX]; 
     GetCurrentDir(buff, FILENAME_MAX);
     string currentWorkingDir(buff);
     return currentWorkingDir;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     WIN32_FIND_DATA FoundFileData;
     TCHAR szDir[MAX_PATH];
@@ -112,12 +112,6 @@ int main(int argc, char* argv[])
 
     StringCchLength(inputPath, MAX_PATH, &length_of_arg);
 
-    if (length_of_arg > (MAX_PATH - 3))
-    {
-        _tprintf(TEXT("\nDirectory path is too long.\n"));
-        return (-1);
-    }
-
     StringCchCopy(szDir, MAX_PATH, inputPath);
     StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
     HANDLE hFind = FindFirstFile(szDir, &FoundFileData);
@@ -126,9 +120,18 @@ int main(int argc, char* argv[])
         printf("FindFirstFile failed (%d)\n", GetLastError());
         return (-1);
     }  
+    PTSTR filename = FoundFileData.cFileName;
+    cout << "Please look at the first file found, called " << filename << endl << " Count (starting at 1) at which position the first number of the month is placed and enter it" << endl;
+    int x = 0;
+    cin >> x;
+    if (cin.fail()) {
+        cout << "You have not entered a valid digit" << endl;
+        return -1;
+    }
 
     do {
-        PTSTR filename = FoundFileData.cFileName;
+        PTSTR filename = FoundFileData.cFileName;       
+        cout << filename << endl;
         size_t size = wcstombs(NULL, filename, 0);
         char* charStr = new char[size + 1];
         wcstombs(charStr, filename, size + 1); //Access to filename works for example like CharStr[15]
@@ -181,4 +184,5 @@ int main(int argc, char* argv[])
             }
         }
     } while (FindNextFile(hFind, &FoundFileData) != 0);
+    return 0;
 }
