@@ -1,16 +1,13 @@
 #include <iostream>
-#include <stdio.h>
 #include <tchar.h>
 #include <Windows.h>
 #include <strsafe.h>
 #include <string>
-#include "atlstr.h"
 #include <io.h>
-#include <direct.h>
 #include <sstream>
 #include <boost/filesystem.hpp>
-#include <stdlib.h>
 #include <direct.h>
+
 #define GetCurrentDir _getcwd
 
 #define MAX 60
