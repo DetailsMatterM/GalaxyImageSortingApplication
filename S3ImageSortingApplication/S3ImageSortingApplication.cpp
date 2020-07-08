@@ -130,7 +130,9 @@ int main()
         cout << "You have not entered a valid digit" << endl;
         return -1;
     }
+
     x = x - 1;
+
     if (x == -1) {
         cout << "0 is not a valid entry" << endl;
         return -1;
