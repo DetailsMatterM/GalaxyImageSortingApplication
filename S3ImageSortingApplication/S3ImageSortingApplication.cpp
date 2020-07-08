@@ -121,11 +121,16 @@ int main()
         return (-1);
     }  
     PTSTR filename = FoundFileData.cFileName;
-    cout << "Please look at the first file found, called " << filename << endl << " Count (starting at 1) at which position the first number of the month is placed and enter it" << endl;
+    cout << "Please look at the name of the first file  in your list" << endl << " Count (starting at 1) at which position the first number of the month is placed and enter it" << endl;
     int x = 0;
     cin >> x;
     if (cin.fail()) {
         cout << "You have not entered a valid digit" << endl;
+        return -1;
+    }
+    x = x - 1;
+    if (x == -1) {
+        cout << "0 is not a valid entry" << endl;
         return -1;
     }
 
@@ -135,10 +140,10 @@ int main()
         size_t size = wcstombs(NULL, filename, 0);
         char* charStr = new char[size + 1];
         wcstombs(charStr, filename, size + 1); //Access to filename works for example like CharStr[15]
-        if (filename[4] == '1') {
+        if (filename[x] == '1') {
             string path = location;
             path = stringAdjust(path);
-            switch (filename[5]) {
+            switch (filename[x+1]) {
                 case '0': 
                     copy(path, charStr, "Oktober");
                     break;
