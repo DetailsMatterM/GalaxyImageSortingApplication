@@ -1,5 +1,5 @@
 # GalaxyImageSortingApplication
-This lightweight application is intended to ease the process of sorting your photos while offering great usability. This process is based on the filename and will result in folders, named according to the months the photos in it were taken. 
+This lightweight application is intended to ease the process of sorting your photos while offering great usability. This process is based on the filename and will result in folders, named according to the months the photos in it were taken. It also allows the user to specify if the folders should be named according to english or german language.
 The application will sort the images in the directories, created in the original location, without deleting the originals.
 You can either use the pre-build executable or build the solution yourself.
 Please separate your image files based on the year they have been taken in before you start using the application.
