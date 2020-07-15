@@ -2,6 +2,7 @@
 This lightweight application is intended to ease the process of sorting your photos while offering great usability. This process is based on the filename and will result in folders, named according to the months the photos in it were taken. 
 The application will sort the images in the directories, created in the original location, without deleting the originals.
 You can either use the pre-build executable or build the solution yourself.
+Please separate your image files based on the year they have been taken in before you start using the application.
 
 # Required steps to build and run: 
 1. Install Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019 https://support.microsoft.com/de-de/help/2977003/the-latest-supported-visual-c-downloads
