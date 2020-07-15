@@ -128,12 +128,11 @@ int main()
     char lang;
     cin >> lang;
     cout << lang << endl;
+    const char* months[12] = { "Januar", "Februar", "M\x84rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" };
     if (lang == 'e') {
-        const char* months[12] = { "January", "February", "March", "April", "Mai", "June", "July", "August", "September", "October", "November", "December" };
+        const char* monthsE[12] = { "January", "February", "March", "April", "Mai", "June", "July", "August", "September", "October", "November", "December" };
+        memcpy(months, monthsE, sizeof(months));
         cout << "ENGLISH" << endl;
-    }
-    else {
-        const char* months[12] = { "Januar", "Februar", "M\x84rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" };
     }
     
     cout << "Please look at the name of the first file  in your list" << endl << "Count (starting at 1) at which position the first number of the month is placed and enter it" << endl;
@@ -161,13 +160,13 @@ int main()
             path = stringAdjust(path);
             switch (filename[x+1]) {
                 case '0': 
-                    copy(path, charStr, "Oktober");
+                    copy(path, charStr, months[9]);
                     break;
                 case '1':
-                    copy(path, charStr, "November");
+                    copy(path, charStr, months[10]);
                     break;
                 case '2':
-                    copy(path, charStr, "Dezember");
+                    copy(path, charStr, months[11]);
                     break;
             }
         }
@@ -176,31 +175,31 @@ int main()
             path = stringAdjust(path);
             switch (filename[5]) {
             case '1':
-                copy(path, charStr, "Januar");
+                copy(path, charStr, months[0]);
                 break;
             case '2':
-                copy(path, charStr, "Februar");
+                copy(path, charStr, months[1]);
                 break;
             case '3':
-                copy(path, charStr, "März");
+                copy(path, charStr, months[2]);
                 break;
             case '4':
-                copy(path, charStr, "April");
+                copy(path, charStr, months[3]);
                 break;
             case '5':
-                copy(path, charStr, "Mai");
+                copy(path, charStr, months[4]);
                 break;
             case '6':
-                copy(path, charStr, "Juni");
+                copy(path, charStr, months[5]);
                 break;
             case '7':
-                copy(path, charStr, "Juli");
+                copy(path, charStr, months[6]);
                 break;
             case '8':
-                copy(path, charStr, "August");
+                copy(path, charStr, months[7]);
                 break;
             case '9':
-                copy(path, charStr, "September");
+                copy(path, charStr, months[8]);
                 break;
             }
         }
