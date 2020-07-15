@@ -1,16 +1,14 @@
 #include <iostream>
-#include <stdio.h>
 #include <tchar.h>
 #include <Windows.h>
 #include <strsafe.h>
 #include <string>
-#include "atlstr.h"
 #include <io.h>
-#include <direct.h>
 #include <sstream>
 #include <boost/filesystem.hpp>
-#include <stdlib.h>
 #include <direct.h>
+#include <conio.h>
+
 #define GetCurrentDir _getcwd
 
 #define MAX 60
@@ -95,13 +93,13 @@ void copy(string path, char* charStr, string month) {
 }
 
 string getCurrentDir() {
-    char buff[FILENAME_MAX]; //create string buffer to hold path
+    char buff[FILENAME_MAX]; 
     GetCurrentDir(buff, FILENAME_MAX);
     string currentWorkingDir(buff);
     return currentWorkingDir;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     WIN32_FIND_DATA FoundFileData;
     TCHAR szDir[MAX_PATH];
@@ -115,12 +113,6 @@ int main(int argc, char* argv[])
 
     StringCchLength(inputPath, MAX_PATH, &length_of_arg);
 
-    if (length_of_arg > (MAX_PATH - 3))
-    {
-        _tprintf(TEXT("\nDirectory path is too long.\n"));
-        return (-1);
-    }
-
     StringCchCopy(szDir, MAX_PATH, inputPath);
     StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
     HANDLE hFind = FindFirstFile(szDir, &FoundFileData);
@@ -129,16 +121,32 @@ int main(int argc, char* argv[])
         printf("FindFirstFile failed (%d)\n", GetLastError());
         return (-1);
     }  
+    PTSTR filename = FoundFileData.cFileName;
+    cout << "Welcome to GalaxyImageSorting" << endl;
+    cout << "Please look at the name of the first file  in your list" << endl << "Count (starting at 1) at which position the first number of the month is placed and enter it" << endl;
+    int x = 0;
+    cin >> x;
+    if (cin.fail()) {
+        cout << "You have not entered a valid digit" << endl;
+        return -1;
+    }
+
+    x = x - 1;
+
+    if (x == -1) {
+        cout << "0 is not a valid entry" << endl;
+        return -1;
+    }
 
     do {
-        PTSTR filename = FoundFileData.cFileName;
+        PTSTR filename = FoundFileData.cFileName;       
         size_t size = wcstombs(NULL, filename, 0);
         char* charStr = new char[size + 1];
         wcstombs(charStr, filename, size + 1); //Access to filename works for example like CharStr[15]
-        if (filename[4] == '1') {
+        if (filename[x] == '1') {
             string path = location;
             path = stringAdjust(path);
-            switch (filename[5]) {
+            switch (filename[x+1]) {
                 case '0': 
                     copy(path, charStr, "Oktober");
                     break;
@@ -184,4 +192,9 @@ int main(int argc, char* argv[])
             }
         }
     } while (FindNextFile(hFind, &FoundFileData) != 0);
+    cout << "We have sorted your files for you!" << endl;
+    cout << "Press any key to close this window and end the program" << endl;
+    getch();
+
+    return 0;
 }
