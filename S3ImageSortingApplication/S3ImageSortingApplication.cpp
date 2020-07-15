@@ -123,16 +123,22 @@ int main()
         return (-1);
     }  
     PTSTR filename = FoundFileData.cFileName;
-    cout << "Welcome to GalaxyImageSorting" << endl;
-    cout << "Do you want your images to be sorted in folders named in German or English? (g/e)";
+    cout << "Welcome to GalaxyImageSorting" << endl << "Please answer some questions to determine the best configuration for you" << endl;
+
+    cout << "Do you want your images to be sorted in directories named in German or English? (g/e)";
     char lang;
     cin >> lang;
+    
+    if (lang != 'e' && lang != 'g') {
+        cout << "You have entered an invalid identifier" << endl;
+        return -1;
+    }
+
     cout << lang << endl;
     const char* months[12] = { "Januar", "Februar", "M\x84rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" };
     if (lang == 'e') {
         const char* monthsE[12] = { "January", "February", "March", "April", "Mai", "June", "July", "August", "September", "October", "November", "December" };
         memcpy(months, monthsE, sizeof(months));
-        cout << "ENGLISH" << endl;
     }
     
     cout << "Please look at the name of the first file  in your list" << endl << "Count (starting at 1) at which position the first number of the month is placed and enter it" << endl;
