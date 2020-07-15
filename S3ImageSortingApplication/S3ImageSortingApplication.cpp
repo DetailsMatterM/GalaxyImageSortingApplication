@@ -8,6 +8,7 @@
 #include <boost/filesystem.hpp>
 #include <direct.h>
 #include <conio.h>
+#include <boost/locale/info.hpp>
 
 #define GetCurrentDir _getcwd
 
@@ -123,6 +124,18 @@ int main()
     }  
     PTSTR filename = FoundFileData.cFileName;
     cout << "Welcome to GalaxyImageSorting" << endl;
+    cout << "Do you want your images to be sorted in folders named in German or English? (g/e)";
+    char lang;
+    cin >> lang;
+    cout << lang << endl;
+    if (lang == 'e') {
+        const char* months[12] = { "January", "February", "March", "April", "Mai", "June", "July", "August", "September", "October", "November", "December" };
+        cout << "ENGLISH" << endl;
+    }
+    else {
+        const char* months[12] = { "Januar", "Februar", "M\x84rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" };
+    }
+    
     cout << "Please look at the name of the first file  in your list" << endl << "Count (starting at 1) at which position the first number of the month is placed and enter it" << endl;
     int x = 0;
     cin >> x;
