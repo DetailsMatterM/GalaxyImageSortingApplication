@@ -124,7 +124,6 @@ int main()
     }  
     PTSTR filename = FoundFileData.cFileName;
     cout << "Welcome to GalaxyImageSorting" << endl << "Please answer some questions to determine the best configuration for you" << endl;
-
     cout << "Do you want your images to be sorted in directories named in German or English? (g/e)";
     char lang;
     cin >> lang;
