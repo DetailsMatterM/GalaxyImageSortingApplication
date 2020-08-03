@@ -94,7 +94,8 @@ void copy(string path, char* charStr, string month) {
     }
 }
 
-string getCurrentDir() { //this function allows to retrieve the current working directory, in which the executable is located
+//this function allows to retrieve the current working directory, in which the executable is located
+string getCurrentDir() { 
     char buff[FILENAME_MAX]; 
     GetCurrentDir(buff, FILENAME_MAX);
     string currentWorkingDir(buff);
@@ -108,15 +109,15 @@ int main()
     size_t lengthOfArg;
     
     string location = getCurrentDir();
-    char* cstr = new char[location.length() + 1];
+    char* cstr = new char[location.length() + 1]; 
     strcpy(cstr, location.c_str());
 
     TCHAR* inputPath = convertToTCHAR(cstr);
-
     StringCchLength(inputPath, MAX_PATH, &lengthOfArg);
 
-    StringCchCopy(szDir, MAX_PATH, inputPath);
-    StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
+   StringCchCopy(szDir, MAX_PATH, inputPath); //add the detected inputPath to the szDir
+   StringCchCat(szDir, MAX_PATH, TEXT("\\*")); //concatenate a double backslash
+
     HANDLE hFind = FindFirstFile(szDir, &FoundFileData);
     
     if (hFind == INVALID_HANDLE_VALUE) {
@@ -151,7 +152,7 @@ int main()
 
     x = x - 1;
 
-    if (x == -1) {
+    if (x == -1 || x < 0) {
         cout << "0 is not a valid entry" << endl;
         return -1;
     }
