@@ -35,13 +35,14 @@ wstring s2ws(const std::string& s)
     len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), sLength, 0, 0);
     wchar_t* buf = new wchar_t[len];
     MultiByteToWideChar(CP_ACP, 0, s.c_str(), sLength, buf, len);
-    std::wstring r(buf);
+    wstring r(buf);
     delete[] buf;
     return r;
 }
 
 string stringAdjust(string input) {
     stringstream stream;
+    //To make the path usable, all "\" have to be replaced with "\\"
     for (int i = 0; i < input.length(); ++i) {
         if (input[i] == '\\') {
             stream << "\\\\";
@@ -60,7 +61,7 @@ void makeDir(string path) {
     CreateDirectory(pathToUse, NULL);
 }
 
-bool exists(string p)
+bool exists(string p) //checks if a certain file on a certain path already exists
 {
     if (filesystem::exists(p))
         return true;
@@ -81,7 +82,7 @@ void copyFile(string path, string newPath, char* charStr) {
 }
 
 void copy(string path, char* charStr, string month) {
-    path = stringAdjust(path);
+    path = stringAdjust(path); //make the path useable
     string newPath = path + "\\\\" + month;
     bool checker = exists(newPath);
     if (checker == false) {
@@ -93,7 +94,8 @@ void copy(string path, char* charStr, string month) {
     }
 }
 
-string getCurrentDir() {
+//this function allows to retrieve the current working directory, in which the executable is located
+string getCurrentDir() { 
     char buff[FILENAME_MAX]; 
     GetCurrentDir(buff, FILENAME_MAX);
     string currentWorkingDir(buff);
@@ -104,18 +106,18 @@ int main()
 {
     WIN32_FIND_DATA FoundFileData;
     TCHAR szDir[MAX_PATH];
-    size_t length_of_arg;
+    size_t lengthOfArg;
     
     string location = getCurrentDir();
-    char* cstr = new char[location.length() + 1];
+    char* cstr = new char[location.length() + 1]; 
     strcpy(cstr, location.c_str());
 
     TCHAR* inputPath = convertToTCHAR(cstr);
+    StringCchLength(inputPath, MAX_PATH, &lengthOfArg);
 
-    StringCchLength(inputPath, MAX_PATH, &length_of_arg);
+   StringCchCopy(szDir, MAX_PATH, inputPath); //add the detected inputPath to the szDir
+   StringCchCat(szDir, MAX_PATH, TEXT("\\*")); //concatenate a double backslash
 
-    StringCchCopy(szDir, MAX_PATH, inputPath);
-    StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
     HANDLE hFind = FindFirstFile(szDir, &FoundFileData);
     
     if (hFind == INVALID_HANDLE_VALUE) {
@@ -150,7 +152,7 @@ int main()
 
     x = x - 1;
 
-    if (x == -1) {
+    if (x == -1 || x < 0) {
         cout << "0 is not a valid entry" << endl;
         return -1;
     }
